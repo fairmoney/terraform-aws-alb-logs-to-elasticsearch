@@ -1,9 +1,3 @@
-variable "doctype" {
-  type        = string
-  description = "doctype"
-  default     = "alb-access-logs"
-}
-
 variable "es_endpoint" {
   type        = string
   description = "AWS elasticsearch endpoint. Without http:// or https:// "

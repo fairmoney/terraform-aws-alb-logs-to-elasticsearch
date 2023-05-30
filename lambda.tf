@@ -13,7 +13,6 @@ resource "aws_lambda_function" "alb_logs_to_elasticsearch_vpc" {
     variables = {
       es_endpoint = var.es_endpoint
       index       = var.index
-      doctype     = var.doctype
       region      = var.region
     }
   }
@@ -60,7 +59,6 @@ resource "aws_lambda_function" "alb_logs_to_elasticsearch" {
     variables = {
       es_endpoint = var.es_endpoint
       index       = var.index
-      doctype     = var.doctype
       region      = var.region
     }
   }
