@@ -1,0 +1,12 @@
+**.swp
+.vscode/
+.idea/
+.plugin_cache
+__pycache__
+.DS_Store
+.terraform*
+terraform.tfstate*
+*.tfplan
+*.tfstate
+*.tfstate.*.backup
+*.tfstate.backup

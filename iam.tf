@@ -1,8 +1,43 @@
-data "template_file" "policy" {
-  template = file("${path.module}/files/es_policy.json")
-  vars = {
-    s3_bucket_arn = var.s3_bucket_arn
-    es_domain_arn = var.es_domain_arn
+data "aws_iam_policy_document" "policy" {
+  statement {
+    sid       = "LambdaLogCreation"
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*:*"]
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+  }
+
+  statement {
+    sid    = "ESPermissions"
+    effect = "Allow"
+    resources = [
+      format("%s/*", var.es_domain_arn)
+    ]
+
+    actions = [
+      "es:ESHttpPost",
+      "es:ESHttpPut",
+    ]
+  }
+
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = [var.s3_bucket_arn]
+    actions   = ["s3:ListBucket"]
+  }
+
+  statement {
+    sid    = ""
+    effect = "Allow"
+    resources = [
+      format("%s/*", var.s3_bucket_arn)
+    ]
+    actions = ["s3:GetObject"]
   }
 }
 
@@ -10,26 +45,25 @@ resource "aws_iam_policy" "policy" {
   name        = "${var.prefix}alb-logs-to-elasticsearch"
   path        = "/"
   description = "Policy for ${var.prefix}alb-logs-to-elasticsearch Lambda function"
-  policy      = data.template_file.policy.rendered
+  policy      = data.aws_iam_policy_document.policy.json
+}
+
+data "aws_iam_policy_document" "sts" {
+  statement {
+    sid     = ""
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_iam_role" "role" {
-  name = "${var.prefix}alb-logs-to-elasticsearch"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  name               = "${var.prefix}alb-logs-to-elasticsearch"
+  assume_role_policy = data.aws_iam_policy_document.sts.json
 }
 
 resource "aws_iam_role_policy_attachment" "policy_attachment" {

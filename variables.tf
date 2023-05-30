@@ -1,6 +1,6 @@
 variable "es_endpoint" {
   type        = string
-  description = "AWS elasticsearch endpoint. Without http:// or https:// "
+  description = "AWS Elasticsearch/OpenSearch endpoint. Without http:// or https:// "
 }
 
 variable "es_domain_arn" {
@@ -16,7 +16,7 @@ variable "index" {
 
 variable "lambda_function_filename" {
   type        = string
-  description = "Filename with the lambda's source code"
+  description = "Filename with the lambda's zipped source code"
   default     = ""
 }
 
