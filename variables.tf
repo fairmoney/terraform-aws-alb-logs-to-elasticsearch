@@ -3,6 +3,11 @@ variable "es_endpoint" {
   description = "AWS elasticsearch endpoint. Without http:// or https:// "
 }
 
+variable "es_domain_arn" {
+  type        = string
+  description = "AWS Eleasticsearch/OpenSearch ARN. Required for IAM permissions"
+}
+
 variable "index" {
   type        = string
   description = "Index to create. adds a timestamp to index. Example: alblogs-2016.03.31"
