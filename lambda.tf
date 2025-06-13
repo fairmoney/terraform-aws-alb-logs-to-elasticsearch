@@ -3,6 +3,7 @@ resource "aws_lambda_function" "alb_logs_to_elasticsearch" {
   function_name    = "${var.prefix}alb-logs-to-elasticsearch"
   description      = "${var.prefix}alb-logs-to-elasticsearch"
   timeout          = var.lambda_timeout
+  memory_size      = var.lambda_memory_size
   runtime          = "nodejs${var.nodejs_version}"
   role             = aws_iam_role.role.arn
   handler          = "index.handler"
