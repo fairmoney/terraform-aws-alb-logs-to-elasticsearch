@@ -20,6 +20,12 @@ variable "lambda_function_filename" {
   default     = ""
 }
 
+variable "lambda_timeout" {
+  type        = number
+  description = "Lambda timeout in seconds"
+  default     = 300
+}
+
 variable "nodejs_version" {
   type        = string
   description = "Nodejs version to be used"
