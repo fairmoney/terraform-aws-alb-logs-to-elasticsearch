@@ -26,6 +26,12 @@ variable "lambda_timeout" {
   default     = 300
 }
 
+variable "lambda_memory_size" {
+  type        = number
+  description = "Lambda memory amount in MB. Defaults to 128."
+  default     = 128
+}
+
 variable "nodejs_version" {
   type        = string
   description = "Nodejs version to be used"
